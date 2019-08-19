@@ -99,28 +99,73 @@ namespace p096_sudoku
                 }
             }
 
-            for (int i = 0; i < _N; i++)
+            bool wereChanged = true;
+            while (wereChanged)
             {
-                for (int j = 0; j < _M; j++)
+                wereChanged = false;
+                for (int i = 0; i < _N; i++)
                 {
-                    //Если этого элемента ещё нет в матрице
-                    if (values[i, j] != null)
+                    for (int j = 0; j < _M; j++)
                     {
-                        values[i, j].AddRange(new List<int>(){1, 2, 3, 4, 5, 6, 7, 8, 9});
-                        foreach (var num in lines[i])
-                            values[i, j].Remove(num);
-                        foreach (var column in columnes[j])
-                            values[i, j].Remove(column);
-                        foreach (var block in blocks[i / _blocksSize, j / _blocksSize])
-                            values[i, j].Remove(block);
+                        //Если этого элемента ещё нет в матрице
+                        if (values[i, j] != null)
+                        {
+                            values[i, j].AddRange(new List<int>() {1, 2, 3, 4, 5, 6, 7, 8, 9});
+                            foreach (var num in lines[i])
+                                values[i, j].Remove(num);
+                            foreach (var column in columnes[j])
+                                values[i, j].Remove(column);
+                            foreach (var block in blocks[i / _blocksSize, j / _blocksSize])
+                                values[i, j].Remove(block);
 
-
-
+                        }
                     }
+                }
+
+                //Ищем единственные варианты и удаляем их из поиска
+                for (int i = 0; i < _N; i++)
+                {
+                    for (int j = 0; j < _M; j++)
+                    {
+                        var value = values[i, j];
+                        if (value != null)
+                        {
+                            if (value.Count == 1)
+                            {
+                                wereChanged = true;
+                                var curvalue = value.First();
+                                rsudoku[i, j] = curvalue;
+                                lines[i].Add(curvalue);
+                                columnes[j].Add(curvalue);
+                                blocks[i / _blocksSize, j / _blocksSize].Add(curvalue);
+                                values[i, j] = null;
+                            }
+                        }
+                    }
+                }
+
+                if (wereChanged)
+                {
+                    foreach (var value in values)
+                    {
+                        if(value != null)
+                            value.Clear();
+                    }
+
                 }
             }
 
             return rsudoku;
         }
+
+        void func(int[,] sudoku, int _N, int _M)
+        {
+            List<int>[,] values = new List<int>[_N, _M];
+            for (int i = 0; i < _N; i++)
+            {
+                for(int j = 0; j < _M; j++) { }
+            }
+        }
+        
     }
 }
