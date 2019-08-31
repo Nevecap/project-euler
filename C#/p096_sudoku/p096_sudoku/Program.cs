@@ -11,7 +11,7 @@ namespace p096_sudoku
     {
         static void Main(string[] args)
         {
-            var text = File.ReadAllText(@"..\..\..\..\..\p096_sudoku.txt");
+            var text = File.ReadAllText(@"..\..\..\..\..\Problems\p096_sudoku.txt");
             var strings = text.Split('\n');
             var len = strings.Length / 10;
             var curString = new List<String>();
