@@ -15,6 +15,7 @@ namespace p096_sudoku
             var strings = text.Split('\n');
             var len = strings.Length / 10;
             var curString = new List<String>();
+            List<int[,]> solvedSudokus = new List<int[,]>();
             for (int i = 0; i < len; i++)
             {
                 for (int j = 0; j < 9; j++)
@@ -24,8 +25,26 @@ namespace p096_sudoku
                 var sudoku = parseSudoku(curString.ToArray());
                 var nsudoku = new sudoku(sudoku);
                 var rsudoku = nsudoku.resolve();
+                solvedSudokus.Add(rsudoku);
                 curString.Clear();
             }
+
+            var solvedSudokusSW = new StringWriter();
+            var str = new char[9];
+            var num = 1;
+            foreach (var sudoku in solvedSudokus)
+            {
+                solvedSudokusSW.WriteLine("Grid " + num++);
+                for (int i = 0; i < 9; i++)
+                {
+                    for (int j = 0; j < 9; j++)
+                    {
+                        str[j] = sudoku[i, j].ToString()[0];
+                    }
+                    solvedSudokusSW.WriteLine(str);
+                }
+            }
+            File.WriteAllText("solved.txt", solvedSudokusSW.ToString());
         }
 
         static int[,] parseSudoku(string[] text, int N = 9, int M = 9)
